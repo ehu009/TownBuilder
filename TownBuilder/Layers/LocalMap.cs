@@ -33,13 +33,21 @@ namespace TownBuilder.Layers
             _testTileMap.Antialiased = false;
             AddChild(_testTileMap);
 
-            _npc = new NonPlayerCharacter(_testTileMap);
+            _npc = new NonPlayerCharacter(this);
             AddChild(_npc);
 
             HandleCustomTileProperties(_testTileMap);
 
             // Use the bounds to layout the positioning of our drawable assets
             var bounds = VisibleBoundsWorldspace;
+        }
+
+        public void MoveMapByDiff(CCPoint diff)
+        {
+            _testTileMap.TileLayersContainer.Position += diff;
+
+            _npc.Position += diff;
+            _npc.MoveEntityRandomly();
         }
 
         public void HandleTouch()
@@ -68,6 +76,31 @@ namespace TownBuilder.Layers
                     }
                 }
             }
+        }
+
+        public bool ShouldEntityMoveToLocation(CCPoint tileLocation)
+        {
+            var mapOffset = _testTileMap.TileLayersContainer.Position;
+            var locationOnMap = tileLocation -= mapOffset;
+
+            foreach (CCTileMapLayer layer in _testTileMap.TileLayersContainer.Children)
+            {
+                var tileAtXy = layer.ClosestTileCoordAtNodePosition(locationOnMap);
+
+                var info = layer.TileGIDAndFlags(tileAtXy.Column, tileAtXy.Row);
+
+                if (info != null)
+                {
+                    var properties = _testTileMap.TilePropertiesForGID(info.Gid);
+
+                    if (properties != null && properties.ContainsKey("CanPlayerEnter") && properties["CanPlayerEnter"] == "false")
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         void HandleCustomTilePropertyAt(int worldX, int worldY, CCTileMapLayer layer)

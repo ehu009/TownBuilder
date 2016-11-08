@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CocosSharp;
+using TownBuilder.Layers;
 
 namespace TownBuilder.Entities
 {
@@ -20,7 +21,7 @@ namespace TownBuilder.Entities
 
     public class Player : MovableEntity, IPlayer
     {
-        public Player(CCTileMap map) : base(map, new CCSprite("player.png"))
+        public Player(LocalMap map) : base(map, new CCSprite("player.png"))
         {
             Position = new CCPoint(192, 198);
         }

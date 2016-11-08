@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Layers;
+using TownBuilder.Handler;
 
 namespace TownBuilder.Scenes
 {
@@ -26,13 +27,15 @@ namespace TownBuilder.Scenes
 
         private readonly CCTileMap _map;
 
+        private readonly PlayAreaTouchHandler _touchHandler;
+
         public MainScene(CCGameView gameView) : base(gameView)
         {
             _map = new CCTileMap("TileMaps/dungeon.tmx");
 
             _mapLayer = new LocalMap(_map);
 
-            _playerLayer = new PlayerLayer(_map);
+            _playerLayer = new PlayerLayer(_mapLayer);
 
             _menuLayer = new MenuLayer();
 
@@ -46,13 +49,12 @@ namespace TownBuilder.Scenes
             };
             _mapLayer.AddEventListener(_touchListener);
 
+            _touchHandler = new PlayAreaTouchHandler(_playerLayer, _mapLayer);
         }
 
         private void HandleInput(List<CCTouch> touches, CCEvent touchEvent)
         {
             var firstTouch = touches[0];
-
-            var lastPlayerPosition = _playerLayer.PlayerPosition;
 
             if ((firstTouch.Location != null && firstTouch.Location.Y < 50) || MenuIsOpen)
             {
@@ -60,13 +62,8 @@ namespace TownBuilder.Scenes
             }
             else
             {
-                _mapLayer.HandleTouch();
-                _playerLayer.ReceiveInput(firstTouch.Location);
+                _touchHandler.ReceiveTouch(firstTouch.Location);
             }
-
-            var diff = lastPlayerPosition - _playerLayer.PlayerPosition;
-
-            _map.TileLayersContainer.Position += diff;
         }
 
         private bool MenuIsOpen {

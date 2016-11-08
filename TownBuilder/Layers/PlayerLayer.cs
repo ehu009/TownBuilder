@@ -14,20 +14,24 @@ using TownBuilder.Entities;
 
 namespace TownBuilder.Layers
 {
-    class PlayerLayer : CCLayer
+    public class PlayerLayer : CCLayer
     {
         private Player _player;
-        private CCTileMap _map;
+        private LocalMap _map;
 
         protected const int TileWidth = 16;
         protected const int TileHeight = 16;
 
-        public PlayerLayer(CCTileMap map)
+        public PlayerLayer(LocalMap map)
         {
             _map = map;
         }
 
-        public CCPoint PlayerPosition => _player.Position;
+        public CCPoint PlayerPosition
+        {
+            get { return _player.Position; }
+            set { _player.Position = value; }
+        }
 
         protected override void AddedToScene()
         {
@@ -39,6 +43,11 @@ namespace TownBuilder.Layers
 
         public void ReceiveInput(CCPoint location)
         {
+            if (location == null)
+            {
+                return;
+            }
+
             _player.MovePlayer(RoundPointToTile(location));
         }
 

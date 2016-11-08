@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CocosSharp;
+using TownBuilder.Layers;
 
 namespace TownBuilder.Entities
 {
@@ -18,10 +19,10 @@ namespace TownBuilder.Entities
         protected const int TileWidth = 16;
         protected const int TileHeight = 16;
 
-        private CCTileMap _testTileMap;
+        private readonly LocalMap _testTileMap;
         private readonly CCSprite _sprite;
 
-        public MovableEntity(CCTileMap map, CCSprite sprite)
+        public MovableEntity(LocalMap map, CCSprite sprite)
         {
             _testTileMap = map;
 
@@ -36,11 +37,11 @@ namespace TownBuilder.Entities
 
         protected void MoveOneTileRight()
         {
-            var newPosition = new CCPoint((((int)(PositionX / TileWidth)) + 1) * TileWidth, PositionY);
+            var newPosition = new CCPoint((PositionX + TileWidth), PositionY);
 
-            if (CanEntityMoveToPoint(newPosition))
+            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
             {
-                while (PositionX < newPosition.X)
+                while (Position != newPosition)
                 {
                     PositionX++;
                 }
@@ -49,11 +50,11 @@ namespace TownBuilder.Entities
 
         protected void MoveOneTileLeft()
         {
-            var newPosition = new CCPoint((((int)(PositionX / TileWidth)) - 1) * TileWidth, PositionY);
+            var newPosition = new CCPoint((PositionX - TileWidth), PositionY);
 
-            if (CanEntityMoveToPoint(newPosition))
+            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
             {
-                while (PositionX > newPosition.X)
+                while (Position != newPosition)
                 {
                     PositionX--;
                 }
@@ -62,11 +63,11 @@ namespace TownBuilder.Entities
 
         protected void MoveOneTileUp()
         {
-            var newPosition = new CCPoint(PositionX, (((int)(PositionY / TileHeight)) + 1) * TileHeight);
+            var newPosition = new CCPoint(PositionX, (PositionY + TileHeight));
 
-            if (CanEntityMoveToPoint(newPosition))
+            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
             {
-                while (PositionY < newPosition.Y)
+                while (Position != newPosition)
                 {
                     PositionY++;
                 }
@@ -75,37 +76,15 @@ namespace TownBuilder.Entities
 
         protected void MoveOneTileDown()
         {
-            var newPosition = new CCPoint(PositionX, (((int)(PositionY / TileHeight)) - 1) * TileHeight);
+            var newPosition = new CCPoint(PositionX, PositionY - TileHeight);
 
-            if (CanEntityMoveToPoint(newPosition))
+            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
             {
-                while (PositionY > newPosition.Y)
+                while (Position != newPosition)
                 {
                     PositionY--;
                 }
             }
-        }
-
-        private bool CanEntityMoveToPoint(CCPoint tileLocation)
-        {
-            foreach (CCTileMapLayer layer in _testTileMap.TileLayersContainer.Children)
-            {
-                var tileAtXy = layer.ClosestTileCoordAtNodePosition(tileLocation);
-
-                var info = layer.TileGIDAndFlags(tileAtXy.Column, tileAtXy.Row);
-
-                if (info != null)
-                {
-                    var properties = _testTileMap.TilePropertiesForGID(info.Gid);
-
-                    if (properties != null && properties.ContainsKey("CanPlayerEnter") && properties["CanPlayerEnter"] == "false")
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
     }
 }

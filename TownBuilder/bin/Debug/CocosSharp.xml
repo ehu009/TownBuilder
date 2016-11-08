@@ -157,6 +157,22 @@
             <param name="t">Time along the spline</param>
             <returns>The point along the spline for the given time (t)</returns>
         </member>
+        <member name="P:CocosSharp.CCActionState.Target">
+            <summary>
+            Gets or sets the target.
+            
+            Will be set with the 'StartAction' method of the corresponding Action. 
+            When the 'Stop' method is called, Target will be set to null. 
+            
+            </summary>
+            <value>The target.</value>
+        </member>
+        <member name="P:CocosSharp.CCActionState.IsDone">
+            <summary>
+            Gets a value indicating whether this instance is done.
+            </summary>
+            <value><c>true</c> if this instance is done; otherwise, <c>false</c>.</value>
+        </member>
         <member name="M:CocosSharp.CCActionState.Stop">
             <summary>
             Called after the action has finished.
@@ -184,22 +200,6 @@
              0 means that the action just started
              0.5 means that the action is in the middle
              1 means that the action is over</param>
-        </member>
-        <member name="P:CocosSharp.CCActionState.Target">
-            <summary>
-            Gets or sets the target.
-            
-            Will be set with the 'StartAction' method of the corresponding Action. 
-            When the 'Stop' method is called, Target will be set to null. 
-            
-            </summary>
-            <value>The target.</value>
-        </member>
-        <member name="P:CocosSharp.CCActionState.IsDone">
-            <summary>
-            Gets a value indicating whether this instance is done.
-            </summary>
-            <value><c>true</c> if this instance is done; otherwise, <c>false</c>.</value>
         </member>
         <member name="M:CocosSharp.CCGrid3DActionState.Vertex(CocosSharp.CCGridSize)">
             <summary>
@@ -261,16 +261,16 @@
             sets a new tile quad at a given position
             </summary>
         </member>
-        <member name="T:CocosSharp.CCFadeOutTRTiles">
-            <summary>
-            @brief CCFadeOutTRTiles action
-            Fades out the tiles in a Top-Right direction
-            </summary>
-        </member>
         <member name="T:CocosSharp.CCFadeOutDownTiles">
             <summary>
             @brief CCFadeOutDownTiles action.
             Fades out the tiles in downwards direction
+            </summary>
+        </member>
+        <member name="T:CocosSharp.CCFadeOutTRTiles">
+            <summary>
+            @brief CCFadeOutTRTiles action
+            Fades out the tiles in a Top-Right direction
             </summary>
         </member>
         <member name="T:CocosSharp.CCFadeOutUpTiles">
@@ -391,11 +391,6 @@
                     Camera:
                     - Each node has a camera. By default it points to the center of the CCNode.
         </member>
-        <member name="T:CocosSharp.ICCFocusable">
-            <summary>
-            Interface for nodes that can be focused. 
-            </summary>
-        </member>
         <!-- Badly formed XML comment ignored for member "M:CocosSharp.CCNode.AddEventListener(CocosSharp.CCEventListener,CocosSharp.CCNode)" -->
         <member name="M:CocosSharp.CCNode.AddEventListener(CocosSharp.CCEventListener,System.Int32)">
             <summary>
@@ -509,14 +504,14 @@
             CCBMFont definition
             </summary>
         </member>
-        <member name="F:CocosSharp.CCBMFontConfiguration.CCBMGlyphDef.Subrect">
-            <summary>
-            origin and size of the font
-            </summary>
-        </member>
         <member name="P:CocosSharp.CCBMFontConfiguration.CCBMGlyphDef.Character">
             <summary>
             ID of the character
+            </summary>
+        </member>
+        <member name="F:CocosSharp.CCBMFontConfiguration.CCBMGlyphDef.Subrect">
+            <summary>
+            origin and size of the font
             </summary>
         </member>
         <member name="P:CocosSharp.CCBMFontConfiguration.CCBMGlyphDef.XAdvance">
@@ -575,11 +570,6 @@
             <summary>
             Purges the cached data.
             Removes from memory the cached configurations and the atlas name dictionary.
-            </summary>
-        </member>
-        <member name="T:CocosSharp.ICCTextContainer">
-            <summary>
-            gets or sets a new Label string.
             </summary>
         </member>
         <member name="M:CocosSharp.CCLabel.#ctor">
@@ -744,36 +734,6 @@
             <param name="imageOffset">Image offset.</param>
             <param name="texture">Texture atlas to be used.</param>
         </member>
-        <member name="T:CocosSharp.ICCTexture">
-            <summary>
-            CCNode objects that uses a Texture2D to render the images.
-            </summary>
-            <remarks>
-            The texture can have a blending function.
-            If the texture has alpha premultiplied the default blending function is:
-              src=GL_ONE dst= GL_ONE_MINUS_SRC_ALPHA
-            else
-               src=GL_SRC_ALPHA dst= GL_ONE_MINUS_SRC_ALPHA
-            But you can change the blending funtion at any time.
-            @since v0.8.0
-            </remarks>
-        </member>
-        <member name="T:CocosSharp.ICCBlendable">
-            <summary>
-            You can specify the blending fuction.
-            @since v0.99.0
-            </summary>
-        </member>
-        <member name="P:CocosSharp.ICCBlendable.BlendFunc">
-            <summary>
-            gets or sets the source blending function for the texture
-            </summary>
-        </member>
-        <member name="P:CocosSharp.ICCTexture.Texture">
-            <summary>
-            gets or sets a new texture. it will be retained
-            </summary>
-        </member>
         <member name="T:CocosSharp.LineBreakCondition">
             <summary>
             Describes the line breaking condition.
@@ -806,12 +766,6 @@
             <param name="position"></param>
             <param name="condition"></param>
         </member>
-        <member name="M:CocosSharp.LineBreakElement.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:CocosSharp.LineBreakElement"/>.
-            </summary>
-            <returns>A string that represents the instance.</returns>
-        </member>
         <member name="P:CocosSharp.LineBreakElement.Position">
             <summary>
             Gets or sets line break position.
@@ -821,6 +775,12 @@
             <summary>
             Gets or sets line break condition.
             </summary>
+        </member>
+        <member name="M:CocosSharp.LineBreakElement.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:CocosSharp.LineBreakElement"/>.
+            </summary>
+            <returns>A string that represents the instance.</returns>
         </member>
         <member name="P:CocosSharp.CCLayer.ChildClippingMode">
             <summary>
@@ -892,17 +852,17 @@
             Set this to true if you want to zoom-in/out on the button image like the CCMenuItemLabel works.
             </summary>
         </member>
-        <member name="M:CocosSharp.CCDrawNode.DrawCubicBezier(CocosSharp.CCPoint,CocosSharp.CCPoint,CocosSharp.CCPoint,CocosSharp.CCPoint,System.Int32,System.Single,CocosSharp.CCColor4B)">
-            <summary>
-            draws a cubic bezier path
-            @since v0.8
-            </summary>
-        </member>
         <member name="P:CocosSharp.CCDrawNode.BoundingRect">
             <summary>
             Gets the bounding rectangle of the vertices to be drawn.
             </summary>
             <value>The bounding rectangle</value>
+        </member>
+        <member name="M:CocosSharp.CCDrawNode.DrawCubicBezier(CocosSharp.CCPoint,CocosSharp.CCPoint,CocosSharp.CCPoint,CocosSharp.CCPoint,System.Int32,System.Single,CocosSharp.CCColor4B)">
+            <summary>
+            draws a cubic bezier path
+            @since v0.8
+            </summary>
         </member>
         <member name="T:CocosSharp.CCProgressTimer">
              @brief CCProgresstimer is a subclass of CCNode.
@@ -1010,25 +970,6 @@
             for overlap on the active pixels.
             </summary>
         </member>
-        <member name="M:CocosSharp.CCTextField.DeleteBackwards">
-            <summary>
-            Deletes a character from the end of TextField.
-            </summary>
-        </member>
-        <member name="M:CocosSharp.CCTextField.InsertText(System.String,System.Int32)">
-            <summary>
-            Inserts the text at the end of the TextField
-            </summary>
-            <param name="text">Text.</param>
-            <param name="len">Length.</param>
-        </member>
-        <member name="M:CocosSharp.CCTextField.ReplaceText(System.String,System.Int32)">
-            <summary>
-            Replaces the current text of the field
-            </summary>
-            <param name="text">Text.</param>
-            <param name="len">Length.</param>
-        </member>
         <member name="P:CocosSharp.CCTextField.ReadOnly">
             <summary>
             Gets or sets a value indicating whether this <see cref="T:CocosSharp.CCTextField"/> read only.
@@ -1065,6 +1006,31 @@
             </summary>
             <value>The character count.  Returns 0 if current text is equal to PlaceHolderText</value>
         </member>
+        <member name="M:CocosSharp.CCTextField.DeleteBackwards">
+            <summary>
+            Deletes a character from the end of TextField.
+            </summary>
+        </member>
+        <member name="M:CocosSharp.CCTextField.InsertText(System.String,System.Int32)">
+            <summary>
+            Inserts the text at the end of the TextField
+            </summary>
+            <param name="text">Text.</param>
+            <param name="len">Length.</param>
+        </member>
+        <member name="M:CocosSharp.CCTextField.ReplaceText(System.String,System.Int32)">
+            <summary>
+            Replaces the current text of the field
+            </summary>
+            <param name="text">Text.</param>
+            <param name="len">Length.</param>
+        </member>
+        <member name="P:CocosSharp.ICCIMEDelegate.TextFieldInFocus">
+            <summary>
+            Gets or sets the text field associated with the IME
+            </summary>
+            <value>The text field.</value>
+        </member>
         <member name="M:CocosSharp.ICCIMEDelegate.CanAttachWithIME">
             <summary>
             Determines whether this instance can attach with IME.
@@ -1088,12 +1054,6 @@
             Did instance detach with IME.
             </summary>
             <returns><c>true</c>, if detach with IM was dided, <c>false</c> otherwise.</returns>
-        </member>
-        <member name="P:CocosSharp.ICCIMEDelegate.TextFieldInFocus">
-            <summary>
-            Gets or sets the text field associated with the IME
-            </summary>
-            <value>The text field.</value>
         </member>
         <member name="P:CocosSharp.ICCIMEDelegate.ContentText">
             <summary>
@@ -1141,11 +1101,6 @@
             Base class for other
             </summary>
         </member>
-        <member name="M:CocosSharp.CCEvent.StopPropogation">
-            <summary>
-            Stops propagation for current event
-            </summary>
-        </member>
         <member name="P:CocosSharp.CCEvent.Type">
             <summary>
             The event type
@@ -1159,6 +1114,11 @@
         <member name="P:CocosSharp.CCEvent.CurrentTarget">
             <summary>
             The current target that this event is working on
+            </summary>
+        </member>
+        <member name="M:CocosSharp.CCEvent.StopPropogation">
+            <summary>
+            Stops propagation for current event
             </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:CocosSharp.CCEventDispatcher.AddEventListener(CocosSharp.CCEventListener,CocosSharp.CCNode)" -->
@@ -1249,7 +1209,7 @@
             <summary>
             Adds an event listener with item
             ** Note ** if it is dispatching event, the added operation will be delayed to the end of current dispatch
-            <see cref="!:&gt;ForceAddEventListener"/>
+            <see cref="!:>ForceAddEventListener"/>
             </summary>
             
             <param name="listener"></param>
@@ -1258,7 +1218,7 @@
             <summary>
             Force adding an event listener
             ** Note ** force add an event listener which will ignore whether it's in dispatching.
-            <see cref="!:&gt;AddEventListener"/>
+            <see cref="!:>AddEventListener"/>
             </summary>
             <param name="listener"></param>
         </member>
@@ -1290,7 +1250,7 @@
             <summary>
             Sorts the listeners of specified type by scene graph priority
             </summary>
-            <param name="?"></param>
+            <param name="??"></param>
         </member>
         <member name="M:CocosSharp.CCEventDispatcher.SortEventListenersOfFixedPriority(System.String)">
             <summary>
@@ -1362,6 +1322,13 @@
             </summary>
             <returns>The keys that are currently being pressed.</returns>
         </member>
+        <member name="P:CocosSharp.CCKeyboardState.Item(CocosSharp.CCKeys)">
+            <summary>
+            Returns the state of a specified key.
+            </summary>
+            <param name="key">The key to query.</param>
+            <returns>The state of the key.</returns>
+        </member>
         <member name="M:CocosSharp.CCKeyboardState.IsKeyDown(CocosSharp.CCKeys)">
             <summary>
             Gets whether given key is currently being pressed.
@@ -1404,13 +1371,6 @@
             </summary>
             <param name="obj">The <see cref="P:CocosSharp.CCKeyboardState.KeyboardState"/> to compare.</param>
             <returns>true if the provided <see cref="P:CocosSharp.CCKeyboardState.KeyboardState"/> instance is same with current; false otherwise.</returns>
-        </member>
-        <member name="P:CocosSharp.CCKeyboardState.Item(CocosSharp.CCKeys)">
-            <summary>
-            Returns the state of a specified key.
-            </summary>
-            <param name="key">The key to query.</param>
-            <returns>The state of the key.</returns>
         </member>
         <member name="T:CocosSharp.CCKeys">
             <summary>
@@ -2224,20 +2184,6 @@
             For instance, you could refer to EventListenerAcceleration, EventListenerKeyboard, EventListenerTouchOneByOne, EventListenerCustom.
             </summary>
         </member>
-        <member name="M:CocosSharp.CCEventListener.#ctor(CocosSharp.CCEventListenerType,System.String,System.Action{CocosSharp.CCEvent})">
-            <summary>
-            Initializes event with type and callback function
-            </summary>
-            <param name="type"></param>
-            <param name="listenerID"></param>
-            <param name="callback"></param>
-        </member>
-        <member name="M:CocosSharp.CCEventListener.#ctor(CocosSharp.CCEventListener)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CocosSharp.CCEventListener"/> class using the event listener passed
-            </summary>
-            <param name="eventListener">Event listener.</param>
-        </member>
         <member name="P:CocosSharp.CCEventListener.IsPaused">
             <summary>
             Whether the listener is paused or not
@@ -2292,6 +2238,20 @@
             </summary>
             <returns><c>true</c> if this instance is enabled the specified enabled; otherwise, <c>false</c>.</returns>
             <param name="enabled">If set to <c>true</c> enabled.</param>
+        </member>
+        <member name="M:CocosSharp.CCEventListener.#ctor(CocosSharp.CCEventListenerType,System.String,System.Action{CocosSharp.CCEvent})">
+            <summary>
+            Initializes event with type and callback function
+            </summary>
+            <param name="type"></param>
+            <param name="listenerID"></param>
+            <param name="callback"></param>
+        </member>
+        <member name="M:CocosSharp.CCEventListener.#ctor(CocosSharp.CCEventListener)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CocosSharp.CCEventListener"/> class using the event listener passed
+            </summary>
+            <param name="eventListener">Event listener.</param>
         </member>
         <member name="P:CocosSharp.CCEventListener.IsAvailable">
             <summary>
@@ -2478,6 +2438,11 @@
             </summary>
             <param name="pszZipFileName"></param>
         </member>
+        <member name="T:CocosSharp.ICCFocusable">
+            <summary>
+            Interface for nodes that can be focused. 
+            </summary>
+        </member>
         <member name="M:CocosSharp.PlistDocument.#ctor(System.IO.Stream)">
             <summary>
             Load the plist from a stream. On XNA platforms you shoul use Game.TitleContainer.OpenStream() to get
@@ -2524,6 +2489,41 @@
         <member name="M:CocosSharp.CCMacros.CCRadiansToDegrees(System.Single)">
             @def CC_RADIANS_TO_DEGREES
                         converts radians to degrees
+        </member>
+        <member name="T:CocosSharp.ICCBlendable">
+            <summary>
+            You can specify the blending fuction.
+            @since v0.99.0
+            </summary>
+        </member>
+        <member name="P:CocosSharp.ICCBlendable.BlendFunc">
+            <summary>
+            gets or sets the source blending function for the texture
+            </summary>
+        </member>
+        <member name="T:CocosSharp.ICCTexture">
+            <summary>
+            CCNode objects that uses a Texture2D to render the images.
+            </summary>
+            <remarks>
+            The texture can have a blending function.
+            If the texture has alpha premultiplied the default blending function is:
+              src=GL_ONE dst= GL_ONE_MINUS_SRC_ALPHA
+            else
+               src=GL_SRC_ALPHA dst= GL_ONE_MINUS_SRC_ALPHA
+            But you can change the blending funtion at any time.
+            @since v0.8.0
+            </remarks>
+        </member>
+        <member name="P:CocosSharp.ICCTexture.Texture">
+            <summary>
+            gets or sets a new texture. it will be retained
+            </summary>
+        </member>
+        <member name="T:CocosSharp.ICCTextContainer">
+            <summary>
+            gets or sets a new Label string.
+            </summary>
         </member>
         <member name="T:CocosSharp.CCLineCap">
             <summary>
@@ -2764,7 +2764,7 @@
             <summary>
             load the image header fields. We only keep those that matter!
             </summary>
-            <param name="?"></param>
+            <param name="??"></param>
             <returns></returns>
         </member>
         <member name="M:CocosSharp.CCTGAlib.LoadImageData(System.Byte[],System.Int32,CocosSharp.CCImageTGA)">
@@ -2778,7 +2778,7 @@
             <summary>
             this is the function to call when we want to load an image
             </summary>
-            <param name="?"></param>
+            <param name="??"></param>
             <returns></returns>
         </member>
         <member name="M:CocosSharp.CCTGAlib.RGBToGreyscale(CocosSharp.CCImageTGA)">
@@ -2793,6 +2793,13 @@
             </summary>
             <param name="dataBytes"></param>
             <returns></returns>
+        </member>
+        <member name="M:CocosSharp.ZipUtils.StreamToByteArray(System.IO.Stream)">
+            <summary>
+            Helper to convert a Stream into a byte array.
+            </summary>
+            <returns>The byte array.</returns>
+            <param name="inputStream">Input stream.</param>
         </member>
         <member name="M:CocosSharp.ZipUtils.Inflate(System.IO.Stream)">
             <summary>
@@ -2875,6 +2882,14 @@
                 magnitude of the vector defined by the XY components of this point.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:CocosSharp.CCPoint.ComputationOperationDelegate">
+            Run a math operation function on each point component
+                     * absf, fllorf, ceilf, roundf
+                     * any function that has the signature: float func(float);
+                     * For example: let's try to take the floor of x,y
+                     * ccpCompOp(p,floorf);
+                     @since v0.99.1
         </member>
         <member name="M:CocosSharp.CCPoint.Lerp(CocosSharp.CCPoint,CocosSharp.CCPoint,System.Single)">
             Linear Interpolation between two points a and b
@@ -2966,14 +2981,6 @@
             Unrotates two points.
                         @return CCPoint
                         @since v0.7.2
-        </member>
-        <member name="T:CocosSharp.CCPoint.ComputationOperationDelegate">
-            Run a math operation function on each point component
-                     * absf, fllorf, ceilf, roundf
-                     * any function that has the signature: float func(float);
-                     * For example: let's try to take the floor of x,y
-                     * ccpCompOp(p,floorf);
-                     @since v0.99.1
         </member>
         <member name="M:CocosSharp.CCVector2.PerpendicularCCW(CocosSharp.CCVector2)">
             <summary>
