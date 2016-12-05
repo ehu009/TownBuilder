@@ -67,8 +67,10 @@
     <Compile Include="Entities\MovableEntity.cs" />
     <Compile Include="Entities\NonPlayerCharacter.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="Extensions\CCPointExtensions.cs" />
     <Compile Include="Handler\PlayAreaTouchHandler.cs" />
     <Compile Include="Layers\LocalMap.cs" />
+    <Compile Include="Layers\MenuToggleLayer.cs" />
     <Compile Include="Scenes\MainScene.cs" />
     <Compile Include="Layers\MenuLayer.cs" />
     <Compile Include="Layers\PlayerLayer.cs" />

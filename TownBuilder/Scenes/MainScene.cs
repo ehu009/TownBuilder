@@ -41,6 +41,7 @@ namespace TownBuilder.Scenes
 
             AddLayer(_mapLayer);
             AddLayer(_playerLayer);
+            AddLayer(new MenuToggleLayer());
 
             // Register for touch events
             _touchListener = new CCEventListenerTouchAllAtOnce

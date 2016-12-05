@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Layers;
+using TownBuilder.Extensions;
 
 namespace TownBuilder.Entities
 {
@@ -23,7 +24,7 @@ namespace TownBuilder.Entities
     {
         public Player(LocalMap map) : base(map, new CCSprite("player.png"))
         {
-            Position = new CCPoint(192, 198);
+            Position = new CCPoint(10, 10).ToOnScreenLocation();
         }
 
         public void MovePlayer(CCPoint point)

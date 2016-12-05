@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Entities;
+using TownBuilder.Extensions;
 
 namespace TownBuilder.Layers
 {
@@ -48,12 +49,7 @@ namespace TownBuilder.Layers
                 return;
             }
 
-            _player.MovePlayer(RoundPointToTile(location));
-        }
-
-        private static CCPoint RoundPointToTile(CCPoint point)
-        {
-            return new CCPoint(((int)(point.X / TileWidth)) * TileWidth, (((int)(point.Y / TileHeight)) * TileHeight));
+            _player.MovePlayer(location);
         }
     }
 }

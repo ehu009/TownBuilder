@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Layers;
+using TownBuilder.Extensions;
 
 namespace TownBuilder.Entities
 {
@@ -20,7 +21,7 @@ namespace TownBuilder.Entities
 
         public NonPlayerCharacter(LocalMap map) : base(map, new CCSprite("player.png"))
         {
-            Position = new CCPoint(92, 198);
+            Position = new CCPoint(5, 10).ToOnScreenLocation();
 
             _rnd = new Random();
         }

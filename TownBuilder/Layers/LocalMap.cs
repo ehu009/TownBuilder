@@ -12,6 +12,7 @@ using Android.Widget;
 using CocosSharp;
 using TownBuilder.Entities;
 using TownBuilder.Scenes;
+using TownBuilder.Extensions;
 
 namespace TownBuilder.Layers
 {
@@ -19,7 +20,7 @@ namespace TownBuilder.Layers
     {
 
         private CCTileMap _testTileMap;
-        private NonPlayerCharacter _npc;
+        private List<NonPlayerCharacter> _npcs;
 
         public LocalMap(CCTileMap map)
         {
@@ -33,8 +34,8 @@ namespace TownBuilder.Layers
             _testTileMap.Antialiased = false;
             AddChild(_testTileMap);
 
-            _npc = new NonPlayerCharacter(this);
-            AddChild(_npc);
+            _npcs = new List<NonPlayerCharacter> { new NonPlayerCharacter(this) };
+            _npcs.ForEach(x => AddChild(x));
 
             HandleCustomTileProperties(_testTileMap);
 
@@ -46,13 +47,12 @@ namespace TownBuilder.Layers
         {
             _testTileMap.TileLayersContainer.Position += diff;
 
-            _npc.Position += diff;
-            _npc.MoveEntityRandomly();
+            _npcs.ForEach(x => x.Position += diff);
         }
 
-        public void HandleTouch()
+        public void ReceiveInput()
         {
-            _npc.MoveEntityRandomly();
+            _npcs.ForEach(x=> x.MoveEntityRandomly());
         }
 
         void HandleCustomTileProperties(CCTileMap tileMap)
@@ -82,10 +82,15 @@ namespace TownBuilder.Layers
         {
             var mapOffset = _testTileMap.TileLayersContainer.Position;
             var locationOnMap = tileLocation -= mapOffset;
+           
+            return CanDestinationTerrainBeEntered(locationOnMap);
+        }
 
+        private bool CanDestinationTerrainBeEntered(CCPoint pixelLocationOnMap)
+        {
             foreach (CCTileMapLayer layer in _testTileMap.TileLayersContainer.Children)
             {
-                var tileAtXy = layer.ClosestTileCoordAtNodePosition(locationOnMap);
+                var tileAtXy = layer.ClosestTileCoordAtNodePosition(pixelLocationOnMap);
 
                 var info = layer.TileGIDAndFlags(tileAtXy.Column, tileAtXy.Row);
 
