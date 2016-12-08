@@ -17,6 +17,7 @@ namespace TownBuilder.Scenes
 {
     public class MainScene : CCScene
     {
+        private readonly CCGameView _gameView;
         private readonly LocalMap _mapLayer;
         private readonly PlayerLayer _playerLayer;
         private readonly MenuLayer _menuLayer;
@@ -51,20 +52,35 @@ namespace TownBuilder.Scenes
             _mapLayer.AddEventListener(_touchListener);
 
             _touchHandler = new PlayAreaTouchHandler(_playerLayer, _mapLayer);
+            _gameView = gameView;
         }
 
         private void HandleInput(List<CCTouch> touches, CCEvent touchEvent)
         {
             var firstTouch = touches[0];
 
-            if ((firstTouch.Location != null && firstTouch.Location.Y < 50) || MenuIsOpen)
+            if (ShouldToggleMenu(firstTouch.Location))
             {
                 ToggleMainMenu();
+            }
+            else if (ShouldToggleBattle(firstTouch.Location))
+            {
+                EnterBattle();
             }
             else
             {
                 _touchHandler.ReceiveTouch(firstTouch.Location);
             }
+        }
+
+        private bool ShouldToggleMenu(CCPoint  touchLocation)
+        {
+            return (touchLocation != null && touchLocation.Y < 50 && touchLocation.X < 175) || MenuIsOpen;
+        }
+
+        private bool ShouldToggleBattle(CCPoint touchLocation)
+        {
+            return touchLocation != null && touchLocation.Y < 50 && touchLocation.X > 225;
         }
 
         private bool MenuIsOpen {
@@ -89,6 +105,11 @@ namespace TownBuilder.Scenes
         public void ToggleMainMenu()
         {
             MenuIsOpen = !MenuIsOpen;
+        }
+
+        public void EnterBattle()
+        {
+            _gameView.Director.PushScene(new BattleScene(_gameView, this));
         }
     }
 }

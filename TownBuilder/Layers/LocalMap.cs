@@ -82,7 +82,7 @@ namespace TownBuilder.Layers
         {
             var mapOffset = _testTileMap.TileLayersContainer.Position;
             var locationOnMap = tileLocation -= mapOffset;
-           
+
             return CanDestinationTerrainBeEntered(locationOnMap);
         }
 

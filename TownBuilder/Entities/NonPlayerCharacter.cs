@@ -15,7 +15,7 @@ using TownBuilder.Extensions;
 
 namespace TownBuilder.Entities
 {
-    class NonPlayerCharacter : MovableEntity
+    public class NonPlayerCharacter : MovableEntity
     {
         private readonly Random _rnd;
 

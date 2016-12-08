@@ -31,6 +31,13 @@ namespace TownBuilder.Layers
             };
 
             AddChild(label);
+
+            var battleLabel = new CCLabel("Enter Battle", "Arial", 50, CCLabelFormat.SystemFont)
+            {
+                Position = new CCPoint(300, 25)
+            };
+
+            AddChild(battleLabel);
         }
     }
 }
