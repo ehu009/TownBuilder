@@ -18,7 +18,6 @@ namespace TownBuilder.Layers
 {
     public class LocalMap : CCLayer
     {
-
         private CCTileMap _testTileMap;
         private List<NonPlayerCharacter> _npcs;
 
@@ -80,10 +79,20 @@ namespace TownBuilder.Layers
 
         public bool ShouldEntityMoveToLocation(CCPoint tileLocation)
         {
+            if (EntitiesBlockMovement(tileLocation))
+            {
+                return false;
+            }
+
             var mapOffset = _testTileMap.TileLayersContainer.Position;
             var locationOnMap = tileLocation -= mapOffset;
 
             return CanDestinationTerrainBeEntered(locationOnMap);
+        }
+
+        private bool EntitiesBlockMovement(CCPoint location)
+        {
+            return _npcs.Any(x => x.Position.ToTileCoordinates() == location.ToTileCoordinates());
         }
 
         private bool CanDestinationTerrainBeEntered(CCPoint pixelLocationOnMap)

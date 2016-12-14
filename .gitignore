@@ -50,3 +50,6 @@ packages/CocosSharp.1.7.1.0/lib/wpa81/box2d.dll
 TownBuilder/bin/Debug/TownBuilder.TownBuilder-Signed.apk
 TownBuilder/bin/Debug/TownBuilder.TownBuilder.apk
 TownBuilder/obj/Debug/5d82995a.deployment
+TownBuilder/obj/Debug/android_debug_keystore.flag
+TownBuilder/obj/Debug/android/bin/TownBuilder.TownBuilder.apk
+TownBuilder/obj/Debug/android/bin/resources_and_assemblies
