@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Layers;
+using TownBuilder.Extensions;
 
 namespace TownBuilder.Entities
 {
@@ -32,6 +33,15 @@ namespace TownBuilder.Entities
 
             _sprite.AnchorPoint = CCPoint.AnchorMiddle;
             AddChild(_sprite);
+        }
+
+        public CCPoint CurrentTile => Position.ToTileCoordinates();
+
+        public bool IsAdjacentToTile(CCPoint tile)
+        {
+            var entityTile = Position.ToTileCoordinates();
+
+            return Math.Abs(entityTile.X - tile.X) == 1 && Math.Abs(entityTile.Y - tile.Y) == 1;
         }
 
 
