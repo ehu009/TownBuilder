@@ -44,5 +44,12 @@ namespace TownBuilder.Extensions
 
             return new CCPoint((float)newX, (float)newY);
         }
+
+        public static bool DestinationIsCloserVertically(this CCPoint original, CCPoint locationToCompare)
+        {
+            var diff = locationToCompare - original;
+
+            return Math.Abs(diff.X) > Math.Abs(diff.Y);
+        }
     }
 }

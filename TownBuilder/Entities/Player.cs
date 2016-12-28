@@ -15,44 +15,27 @@ using TownBuilder.Extensions;
 
 namespace TownBuilder.Entities
 {
-    public interface IPlayer
+    public class Player : MovableEntity
     {
-        void MovePlayer(CCPoint point);
-    }
+        private CCPoint _destination;
 
-    public class Player : MovableEntity, IPlayer
-    {
         public Player(LocalMap map) : base(map, new CCSprite("player.png"))
         {
             Position = new CCPoint(10, 10).ToOnScreenLocation();
+
+            _destination = CurrentTile;
+
+            Schedule(MovePlayer);
         }
 
-        public void MovePlayer(CCPoint point)
+        public void SetDestination(CCPoint destinationTile)
         {
-            var playerShouldMoveHorizontally = Math.Abs(PositionX - point.X) > Math.Abs(PositionY - point.Y);
+            _destination = destinationTile;
+        }
 
-            if (playerShouldMoveHorizontally)
-            {
-                if (point.X > PositionX)
-                {
-                    MoveOneTileRight();
-                }
-                else if (point.X < PositionX)
-                {
-                    MoveOneTileLeft();
-                }
-            }
-            else
-            {
-                if (point.Y > PositionY)
-                {
-                    MoveOneTileUp();
-                }
-                else if (point.Y < PositionY)
-                {
-                    MoveOneTileDown();
-                }
-            }
+        private void MovePlayer(float timeInSeconds)
+        {
+            MoveToTile(_destination);
         }
     }
 }

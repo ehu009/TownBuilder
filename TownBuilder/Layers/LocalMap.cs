@@ -58,12 +58,32 @@ namespace TownBuilder.Layers
 
         public void ReceiveInput(CCPoint location)
         {
-            if (EntityOccupiesTile(location.ToTileCoordinates()))
+            var tile = location.ToTileCoordinates();
+
+            var playerNextTile = FindNextTileForPlayer(tile);
+
+            if (EntityOccupiesTile(playerNextTile))
             {
-                NpcAtTile(location.ToTileCoordinates()).Interact();
+                NpcAtTile(playerNextTile).Interact();
             }
 
-            MoveEntities(location);
+            MoveEntities(tile);
+        }
+
+        private CCPoint FindNextTileForPlayer(CCPoint destination)
+        {
+            var tileIsVertical = _player.CurrentTile.DestinationIsCloserVertically(destination);
+
+            var diff = _player.CurrentTile - destination;
+
+            if (tileIsVertical)
+            {
+                return new CCPoint(diff.Y > 0 ? _player.CurrentTile.Y + 1 : _player.CurrentTile.Y - 1, _player.CurrentTile.X);
+            }
+            else
+            {
+                return new CCPoint(_player.CurrentTile.Y, diff.X > 0 ? _player.CurrentTile.X + 1 : _player.CurrentTile.X - 1);
+            }
         }
 
         private NonPlayerCharacter NpcAtTile(CCPoint tile)
@@ -71,11 +91,11 @@ namespace TownBuilder.Layers
             return _npcs.First(x => x.Position.ToTileCoordinates() == tile);
         }
 
-        private void MoveEntities(CCPoint location)
+        private void MoveEntities(CCPoint tile)
         {
             var lastPlayerPosition = _player.Position;
 
-            _player.MovePlayer(location);
+            _player.SetDestination(tile);
 
             _npcs.ForEach(x => x.MoveEntityRandomly());
 

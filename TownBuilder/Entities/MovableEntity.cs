@@ -39,11 +39,41 @@ namespace TownBuilder.Entities
 
         public bool IsAdjacentToTile(CCPoint tile)
         {
-            var entityTile = Position.ToTileCoordinates();
-
-            return Math.Abs(entityTile.X - tile.X) == 1 && Math.Abs(entityTile.Y - tile.Y) == 1;
+            return Math.Abs(CurrentTile.X - tile.X) == 1 && Math.Abs(CurrentTile.Y - tile.Y) == 1;
         }
 
+        public void MoveToTile(CCPoint tileCoordinates)
+        {
+            var diff = tileCoordinates - CurrentTile;
+
+            if (diff.X == 0 && diff.Y == 0)
+            {
+                return;
+            }
+
+            if (CurrentTile.DestinationIsCloserVertically(tileCoordinates))
+            {
+                if (diff.X > 0)
+                {
+                    MoveOneTileRight();
+                }
+                else
+                {
+                    MoveOneTileLeft();
+                }
+            }
+            else
+            {
+                if (diff.Y > 0)
+                {
+                    MoveOneTileUp();
+                }
+                else
+                {
+                    MoveOneTileDown();
+                }
+            }
+        }
 
         protected void MoveOneTileRight()
         {
