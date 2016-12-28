@@ -22,9 +22,13 @@ namespace TownBuilder.Entities
         private readonly LocalMap _testTileMap;
         private readonly CCSprite _sprite;
 
+        private bool _finishedMoving;
+
         public MovableEntity(LocalMap map, CCSprite sprite)
         {
             _testTileMap = map;
+
+            this._finishedMoving = true;
 
             // todo: Don't use the player sprite for everything that moves
             _sprite = sprite;
@@ -34,20 +38,28 @@ namespace TownBuilder.Entities
             AddChild(_sprite);
         }
 
+        // possibly unneeded
+        public bool isMoving()
+        {   return !this._finishedMoving;   }
+        
         //  to-do: arrange for more dynamic changing of walk speed
         //  e.g.    private void MoveOneTile(CCPoint direction, float duration)
         private void MoveOneTile(CCPoint direction)
         {
-
             direction.X *= TileWidth;
             direction.Y *= TileHeight;
 
-            if (_testTileMap.ShouldEntityMoveToLocation(this.Position + direction))
+            if (this._finishedMoving && _testTileMap.ShouldEntityMoveToLocation(this.Position + direction))
             {
-                var moveAction = new CCMoveBy(this._testTileMap.walkSpeed0, direction);
-
-                this.RunAction(moveAction);
+                this._finishedMoving = false;
+                this.PerformMovement(new CCMoveBy(this._testTileMap.walkSpeed0, direction));
             }
+        }
+
+        private async void PerformMovement(CCMoveBy moveAction)
+        {
+            await this.RunActionAsync(moveAction);
+            this._finishedMoving = true;
         }
 
         protected void MoveOneTileRight()
