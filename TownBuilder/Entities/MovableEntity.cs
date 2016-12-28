@@ -34,14 +34,19 @@ namespace TownBuilder.Entities
             AddChild(_sprite);
         }
 
+        //  to-do: arrange for more dynamic changing of walk speed
+        //  e.g.    private void MoveOneTile(CCPoint direction, float duration)
         private void MoveOneTile(CCPoint direction)
         {
+
             direction.X *= TileWidth;
             direction.Y *= TileHeight;
 
             if (_testTileMap.ShouldEntityMoveToLocation(this.Position + direction))
             {
-                this.Position += direction;
+                var moveAction = new CCMoveBy(this._testTileMap.walkSpeed0, direction);
+
+                this.RunAction(moveAction);
             }
         }
 

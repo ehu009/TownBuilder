@@ -21,9 +21,12 @@ namespace TownBuilder.Layers
         private CCTileMap _testTileMap;
         private List<NonPlayerCharacter> _npcs;
 
+        public float walkSpeed0;
+
         public LocalMap(CCTileMap map)
         {
             _testTileMap = map;
+            walkSpeed0 = 0.6f;
         }
 
         protected override void AddedToScene()
