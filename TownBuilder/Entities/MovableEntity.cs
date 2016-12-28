@@ -34,57 +34,47 @@ namespace TownBuilder.Entities
             AddChild(_sprite);
         }
 
+        private void MoveOneTile(CCPoint direction)
+        {
+            direction.X *= TileWidth;
+            direction.Y *= TileHeight;
+
+            if (_testTileMap.ShouldEntityMoveToLocation(this.Position + direction))
+            {
+                this.Position += direction;
+            }
+        }
 
         protected void MoveOneTileRight()
         {
-            var newPosition = new CCPoint((PositionX + TileWidth), PositionY);
-
-            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
-            {
-                while (Position != newPosition)
-                {
-                    PositionX++;
-                }
-            }
+            CCPoint dir;
+            dir.X = 1;
+            dir.Y = 0;
+            this.MoveOneTile(dir);
         }
 
         protected void MoveOneTileLeft()
         {
-            var newPosition = new CCPoint((PositionX - TileWidth), PositionY);
-
-            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
-            {
-                while (Position != newPosition)
-                {
-                    PositionX--;
-                }
-            }
+            CCPoint dir;
+            dir.X = -1;
+            dir.Y = 0;
+            this.MoveOneTile(dir);
         }
 
         protected void MoveOneTileUp()
         {
-            var newPosition = new CCPoint(PositionX, (PositionY + TileHeight));
-
-            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
-            {
-                while (Position != newPosition)
-                {
-                    PositionY++;
-                }
-            }
+            CCPoint dir;
+            dir.X = 0;
+            dir.Y = 1;
+            this.MoveOneTile(dir);
         }
 
         protected void MoveOneTileDown()
         {
-            var newPosition = new CCPoint(PositionX, PositionY - TileHeight);
-
-            if (_testTileMap.ShouldEntityMoveToLocation(newPosition))
-            {
-                while (Position != newPosition)
-                {
-                    PositionY--;
-                }
-            }
+            CCPoint dir;
+            dir.X = 0;
+            dir.Y = -1;
+            this.MoveOneTile(dir);
         }
     }
 }
