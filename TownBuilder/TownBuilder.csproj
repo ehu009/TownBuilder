@@ -68,14 +68,12 @@
     <Compile Include="Entities\NonPlayerCharacter.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Extensions\CCPointExtensions.cs" />
-    <Compile Include="Handler\PlayAreaTouchHandler.cs" />
     <Compile Include="Layers\BattleActionLayer.cs" />
     <Compile Include="Layers\LocalMap.cs" />
     <Compile Include="Layers\MenuToggleLayer.cs" />
     <Compile Include="Scenes\BattleScene.cs" />
     <Compile Include="Scenes\MainScene.cs" />
     <Compile Include="Layers\MenuLayer.cs" />
-    <Compile Include="Layers\PlayerLayer.cs" />
     <Compile Include="MainActivity.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -100,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Content\Sounds\" />
+    <Folder Include="Handler\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

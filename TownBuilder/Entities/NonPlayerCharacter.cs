@@ -26,6 +26,13 @@ namespace TownBuilder.Entities
             _rnd = new Random();
         }
 
+        public void Interact()
+        {
+            MoveOneTileDown();
+            MoveOneTileDown();
+            MoveOneTileDown();
+        }
+
         public void MoveEntityRandomly()
         {
             if (this.isMoving())

@@ -11,7 +11,6 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Layers;
-using TownBuilder.Handler;
 
 namespace TownBuilder.Scenes
 {
@@ -19,7 +18,6 @@ namespace TownBuilder.Scenes
     {
         private readonly CCGameView _gameView;
         private readonly LocalMap _mapLayer;
-        private readonly PlayerLayer _playerLayer;
         private readonly MenuLayer _menuLayer;
 
         private readonly CCEventListenerTouchAllAtOnce _touchListener;
@@ -28,20 +26,15 @@ namespace TownBuilder.Scenes
 
         private readonly CCTileMap _map;
 
-        private readonly PlayAreaTouchHandler _touchHandler;
-
         public MainScene(CCGameView gameView) : base(gameView)
         {
             _map = new CCTileMap("TileMaps/dungeon.tmx");
 
             _mapLayer = new LocalMap(_map);
 
-            _playerLayer = new PlayerLayer(_mapLayer);
-
             _menuLayer = new MenuLayer();
 
             AddLayer(_mapLayer);
-            AddLayer(_playerLayer);
             AddLayer(new MenuToggleLayer());
 
             // Register for touch events
@@ -51,7 +44,6 @@ namespace TownBuilder.Scenes
             };
             _mapLayer.AddEventListener(_touchListener);
 
-            _touchHandler = new PlayAreaTouchHandler(_playerLayer, _mapLayer);
             _gameView = gameView;
         }
 
@@ -69,7 +61,7 @@ namespace TownBuilder.Scenes
             }
             else
             {
-                _touchHandler.ReceiveTouch(firstTouch.Location);
+                _mapLayer.ReceiveInput(firstTouch.Location);
             }
         }
 

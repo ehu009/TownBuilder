@@ -21,6 +21,10 @@ namespace TownBuilder.Layers
         private CCTileMap _testTileMap;
         private List<NonPlayerCharacter> _npcs;
 
+        private Player _player;
+
+        private const string TileEntryPropertyKey = "CanPlayerEnter";
+
         public float walkSpeed0;
 
         public LocalMap(CCTileMap map)
@@ -36,6 +40,9 @@ namespace TownBuilder.Layers
             _testTileMap.Antialiased = false;
             AddChild(_testTileMap);
 
+            _player = new Player(this);
+            AddChild(_player);
+
             _npcs = new List<NonPlayerCharacter> { new NonPlayerCharacter(this) };
             _npcs.ForEach(x => AddChild(x));
 
@@ -45,16 +52,46 @@ namespace TownBuilder.Layers
             var bounds = VisibleBoundsWorldspace;
         }
 
-        public void MoveMapByDiff(CCPoint diff)
+        private void MoveMapByDiff(CCPoint diff)
         {
             _testTileMap.TileLayersContainer.Position += diff;
 
             _npcs.ForEach(x => x.Position += diff);
         }
 
-        public void ReceiveInput()
+        public void ReceiveInput(CCPoint location)
         {
-            _npcs.ForEach(x=> x.MoveEntityRandomly());
+            if (EntityOccupiesTile(location.ToTileCoordinates()))
+            {
+                NpcAtTile(location.ToTileCoordinates()).Interact();
+            }
+
+            MoveEntities(location);
+        }
+
+        private NonPlayerCharacter NpcAtTile(CCPoint tile)
+        {
+            return _npcs.First(x => x.Position.ToTileCoordinates() == tile);
+        }
+
+        private void MoveEntities(CCPoint location)
+        {
+            var lastPlayerPosition = _player.Position;
+
+            _player.MovePlayer(location);
+
+            _npcs.ForEach(x => x.MoveEntityRandomly());
+
+            var diff = lastPlayerPosition - _player.Position;
+
+            // todo: add logic to determine if map should move
+            var shouldMapMove = true;
+            if (shouldMapMove)
+            {
+                MoveMapByDiff(diff);
+
+                _player.Position += diff;
+            }
         }
 
         void HandleCustomTileProperties(CCTileMap tileMap)
@@ -82,7 +119,7 @@ namespace TownBuilder.Layers
 
         public bool ShouldEntityMoveToLocation(CCPoint tileLocation)
         {
-            if (EntitiesBlockMovement(tileLocation))
+            if (EntityOccupiesTile(tileLocation.ToTileCoordinates()))
             {
                 return false;
             }
@@ -93,9 +130,12 @@ namespace TownBuilder.Layers
             return CanDestinationTerrainBeEntered(locationOnMap);
         }
 
-        private bool EntitiesBlockMovement(CCPoint location)
+        private bool EntityOccupiesTile(CCPoint tile)
         {
-            return _npcs.Any(x => x.Position.ToTileCoordinates() == location.ToTileCoordinates());
+            var playerIsInLocation = _player?.CurrentTile == tile;
+            var npcIsInLocation = _npcs.Any(x => x.CurrentTile == tile);
+
+            return playerIsInLocation || npcIsInLocation;
         }
 
         private bool CanDestinationTerrainBeEntered(CCPoint pixelLocationOnMap)
@@ -110,7 +150,7 @@ namespace TownBuilder.Layers
                 {
                     var properties = _testTileMap.TilePropertiesForGID(info.Gid);
 
-                    if (properties != null && properties.ContainsKey("CanPlayerEnter") && properties["CanPlayerEnter"] == "false")
+                    if (properties != null && properties.ContainsKey(TileEntryPropertyKey) && properties[TileEntryPropertyKey].ToLower() == false.ToString().ToLower())
                     {
                         return false;
                     }

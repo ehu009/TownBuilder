@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CocosSharp;
 using TownBuilder.Layers;
+using TownBuilder.Extensions;
 
 namespace TownBuilder.Entities
 {
@@ -43,6 +44,17 @@ namespace TownBuilder.Entities
             return !this._finishedMoving;
         }
         
+
+        public CCPoint CurrentTile => Position.ToTileCoordinates();
+
+        public bool IsAdjacentToTile(CCPoint tile)
+        {
+            var entityTile = Position.ToTileCoordinates();
+
+            return Math.Abs(entityTile.X - tile.X) == 1 && Math.Abs(entityTile.Y - tile.Y) == 1;
+        }
+
+
         private void MoveOneTile(CCPoint direction)
         {
             direction.X *= TileWidth;
