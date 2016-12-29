@@ -28,6 +28,10 @@ namespace TownBuilder.Entities
 
         public void MoveEntityRandomly()
         {
+            if (this.isMoving())
+            {
+                return;
+            }
             var num = _rnd.Next(10);
 
             switch (num)

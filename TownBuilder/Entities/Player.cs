@@ -29,6 +29,10 @@ namespace TownBuilder.Entities
 
         public void MovePlayer(CCPoint point)
         {
+            if (this.isMoving())
+            {   
+                return;
+            }
             var playerShouldMoveHorizontally = Math.Abs(PositionX - point.X) > Math.Abs(PositionY - point.Y);
 
             if (playerShouldMoveHorizontally)

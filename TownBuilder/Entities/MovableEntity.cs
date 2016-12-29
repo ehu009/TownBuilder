@@ -22,7 +22,7 @@ namespace TownBuilder.Entities
         private readonly LocalMap _testTileMap;
         private readonly CCSprite _sprite;
 
-        private bool _finishedMoving;
+        private bool _finishedMoving;   //  force entities to move one tile & direction at a time
 
         public MovableEntity(LocalMap map, CCSprite sprite)
         {
@@ -37,22 +37,27 @@ namespace TownBuilder.Entities
             _sprite.AnchorPoint = CCPoint.AnchorMiddle;
             AddChild(_sprite);
         }
-
-        // possibly unneeded
-        public bool isMoving()
-        {   return !this._finishedMoving;   }
         
-        //  to-do: arrange for more dynamic changing of walk speed
-        //  e.g.    private void MoveOneTile(CCPoint direction, float duration)
+        public bool isMoving()
+        {   // use this in subclass' move methods before performing movement
+            return !this._finishedMoving;
+        }
+        
         private void MoveOneTile(CCPoint direction)
         {
             direction.X *= TileWidth;
             direction.Y *= TileHeight;
 
-            if (this._finishedMoving && _testTileMap.ShouldEntityMoveToLocation(this.Position + direction))
+            if (_testTileMap.ShouldEntityMoveToLocation(this.Position + direction))
             {
                 this._finishedMoving = false;
+                //  to-do: arrange for more dynamic changing of walk speed
                 this.PerformMovement(new CCMoveBy(this._testTileMap.walkSpeed0, direction));
+                //  i.e. encode travel speed modification in TileMaps used by the map layer
+            }
+            else
+            {
+                this._finishedMoving = true;
             }
         }
 
